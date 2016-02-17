@@ -55,6 +55,10 @@ This function is called after `getAuthCode` is successful.
 If defined, this function is called within an `Accounts.validateLoginAttempt` callback.
 Use this to allow regular login under certain conditions.
 
+#### generateCode (Optional)
+
+If defined, this function is called to generate the random code instead of the default.
+
 ### License
 
 MIT
