@@ -8,39 +8,6 @@ Simple two factor authentication for accounts-password.
 $ meteor add dburles:two-factor
 ```
 
-## Usage (Server)
-
-Assign a function to `twoFactor.sendCode` that sends out the code. The example below sends the user an email.
-
-```js
-twoFactor.sendCode = (user, code) => {
-  // Send code via email
-  Email.send({
-    to: user.email(), // Method attached using dburles:collection-helpers
-    from: 'noreply@example.com',
-    subject: 'Your authentication code',
-    text: `${code} is your authentication code.`
-  });
-};
-```
-
-**Optional functions:**
-
-```js
-// Optional
-// Conditionally allow regular or two-factor sign in
-twoFactor.validateLoginAttempt = options => {
-  return !! options.user.twoFactorEnabled;
-};
-```
-
-```js
-// Optional
-twoFactor.generateCode = () => {
-  // return a random string
-};
-```
-
 ## Usage (Client)
 
 Typically you would call this method via your application login form event handler:
@@ -73,6 +40,39 @@ twoFactor.verifyAndLogin(code, error => {
   }
   // Success!
 });
+```
+
+## Usage (Server)
+
+Assign a function to `twoFactor.sendCode` that sends out the code. The example below sends the user an email.
+
+```js
+twoFactor.sendCode = (user, code) => {
+  // Send code via email
+  Email.send({
+    to: user.email(), // Method attached using dburles:collection-helpers
+    from: 'noreply@example.com',
+    subject: 'Your authentication code',
+    text: `${code} is your authentication code.`
+  });
+};
+```
+
+**Optional functions:**
+
+```js
+// Optional
+// Conditionally allow regular or two-factor sign in
+twoFactor.validateLoginAttempt = options => {
+  return !! options.user.twoFactorEnabled;
+};
+```
+
+```js
+// Optional
+twoFactor.generateCode = () => {
+  // return a random string
+};
 ```
 
 ## API
