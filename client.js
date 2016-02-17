@@ -13,17 +13,19 @@ const getSelector = user => {
   return {email: user};
 };
 
-const getAuthCode = (user, password, errorCb) => {
+const getAuthCode = (user, password, cb) => {
   const selector = getSelector(user);
 
   const callback = error => {
     if (error) {
-      return errorCb(error);
+      return cb(error);
     }
 
     state.set('verifying', true);
     state.set('user', user);
     state.set('password', password);
+
+    return cb();
   };
 
   Meteor.call(
@@ -34,7 +36,7 @@ const getAuthCode = (user, password, errorCb) => {
   );
 };
 
-const verifyAndLogin = (code, errorCb) => {
+const verifyAndLogin = (code, cb) => {
   const selector = getSelector(state.get('user'));
 
   Accounts.callLoginMethod({
@@ -46,12 +48,14 @@ const verifyAndLogin = (code, errorCb) => {
     }],
     userCallback: error => {
       if (error) {
-        return errorCb(error);
+        return cb(error);
       }
 
       state.set('verifying', false);
       state.set('user', '');
       state.set('password', '');
+
+      return cb();
     }
   });
 };
