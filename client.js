@@ -6,14 +6,15 @@ state.set('user', '');
 state.set('password', '');
 state.set('verifying', false);
 
-const getAuthCode = (user, password, errorCb) => {
-  let selector = user;
-
-  if (selector.indexOf('@') === -1) {
-    selector = {username: selector};
-  } else {
-    selector = {email: selector};
+const getSelector = user => {
+  if (user.indexOf('@') === -1) {
+    return {username: user};
   }
+  return {email: user};
+};
+
+const getAuthCode = (user, password, errorCb) => {
+  const selector = getSelector(user);
 
   const callback = error => {
     if (error) {
@@ -34,13 +35,7 @@ const getAuthCode = (user, password, errorCb) => {
 };
 
 const verifyAndLogin = (code, errorCb) => {
-  let selector = state.get('user');
-
-  if (selector.indexOf('@') === -1) {
-    selector = {username: selector};
-  } else {
-    selector = {email: selector};
-  }
+  const selector = getSelector(state.get('user'));
 
   Accounts.callLoginMethod({
     methodName: 'twoFactor.verifyCodeAndLogin',
