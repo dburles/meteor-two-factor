@@ -38,7 +38,7 @@ Verifies authentication code and logs in user.
 
 #### isVerifying()
 
-Indicates the current state between having generated an authentication code and awaiting verification.
+Reactive function that indicates the current state between having generated an authentication code and awaiting verification.
 
 ## API (Server)
 
