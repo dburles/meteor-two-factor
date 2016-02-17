@@ -8,6 +8,10 @@ Simple two factor authentication for accounts-password.
 $ meteor add dburles:two-factor
 ```
 
+## Prerequisites
+
+Make sure your project is using Meteor's `accounts-password` package, if not add it: `meteor add accounts-password`
+
 ## Usage (Client)
 
 Typically you would call this method via your application login form event handler:
