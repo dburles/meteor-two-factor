@@ -25,7 +25,7 @@ twoFactor.getAuthCode(user, password, error => {
 });
 ```
 
-The following method is reactive and represents the state of authentication. Use it to display the UI to enter the authentication code.
+The following method is reactive and represents the state of authentication. Use it to display the interface to enter the authentication code.
 
 ```js
 Tracker.autorun(function() {
@@ -81,7 +81,7 @@ twoFactor.generateCode = () => {
 
 ## API
 
-The following methods are attached to the `twoFactor` namespace. This may change somewhat for Meteor 1.3.
+The following functions are attached to the `twoFactor` namespace. This may change somewhat for Meteor 1.3.
 
 ## API (Client)
 
@@ -97,7 +97,7 @@ Generates an authentication code. Once generated, a `twoFactorCode` field is add
 
 #### verifyAndLogin(code, [callback])
 
-Verifies authentication code and logs in user.
+Verifies authentication code and logs in the user.
 
 **code** The authentication code.
 
