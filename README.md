@@ -87,13 +87,13 @@ The following functions are attached to the `twoFactor` namespace. This may chan
 
 #### getAuthCode(user, password, [callback])
 
-Generates an authentication code. Once generated, a `twoFactorCode` field is added to the current user document.
+Generates an authentication code. Once generated, a `twoFactorCode` field is added to the current user document. This function mirrors [Meteor.loginWithPassword](http://docs.meteor.com/#/full/meteor_loginwithpassword).
 
-**user** Accepts either a username or email as the `user` argument.
+**user** Either a string interpreted as a username or an email; or an object with a single key: email, username or id. Username or email match in a case insensitive manner.
 
 **password** The user's password.
 
-**callback** Called with no arguments on success, or with a single Error argument on failure.
+**callback** Optional callback. Called with no arguments on success, or with a single Error argument on failure.
 
 #### verifyAndLogin(code, [callback])
 
@@ -101,7 +101,7 @@ Verifies authentication code and logs in the user.
 
 **code** The authentication code.
 
-**callback** Called with no arguments on success, or with a single Error argument on failure.
+**callback** Optional callback. Called with no arguments on success, or with a single Error argument on failure.
 
 #### isVerifying()
 

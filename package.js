@@ -1,6 +1,6 @@
 Package.describe({
   name: 'dburles:two-factor',
-  version: '1.0.0',
+  version: '1.0.1',
   summary: 'Two-factor authentication for accounts-password',
   git: 'https://github.com/dburles/meteor-two-factor.git',
   documentation: 'README.md'

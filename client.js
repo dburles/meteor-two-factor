@@ -7,10 +7,13 @@ state.set('password', '');
 state.set('verifying', false);
 
 const getSelector = user => {
-  if (user.indexOf('@') === -1) {
-    return {username: user};
+  if (typeof user === 'string') {
+    if (user.indexOf('@') === -1) {
+      return {username: user};
+    }
+    return {email: user};
   }
-  return {email: user};
+  return user;
 };
 
 const getAuthCode = (user, password, cb) => {
@@ -18,14 +21,14 @@ const getAuthCode = (user, password, cb) => {
 
   const callback = error => {
     if (error) {
-      return cb(error);
+      return typeof cb === 'function' && cb(error);
     }
 
     state.set('verifying', true);
     state.set('user', user);
     state.set('password', password);
 
-    return cb();
+    return typeof cb === 'function' && cb();
   };
 
   Meteor.call(
@@ -48,14 +51,14 @@ const verifyAndLogin = (code, cb) => {
     }],
     userCallback: error => {
       if (error) {
-        return cb(error);
+        return typeof cb === 'function' && cb(error);
       }
 
       state.set('verifying', false);
       state.set('user', '');
       state.set('password', '');
 
-      return cb();
+      return typeof cb === 'function' && cb();
     }
   });
 };
