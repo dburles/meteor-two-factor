@@ -2,6 +2,24 @@
 
 Simple two factor authentication for accounts-password.
 
+## Table of Contents
+
+- [Installation](https://github.com/dburles/meteor-two-factor#installation)
+- [Prerequisites](https://github.com/dburles/meteor-two-factor#prerequisites)
+- [Example Application](https://github.com/dburles/meteor-two-factor#example-application)
+- [Usage (Client)](https://github.com/dburles/meteor-two-factor#usage-client)
+- [Usage (Server)](https://github.com/dburles/meteor-two-factor#usage-server)
+- [API](https://github.com/dburles/meteor-two-factor#api)
+  - [API (Client)](https://github.com/dburles/meteor-two-factor#api-client)
+    - [getAuthCode](https://github.com/dburles/meteor-two-factor#getauthcode)
+    - [verifyAndLogin](https://github.com/dburles/meteor-two-factor#verifyandlogin)
+    - [isVerifying](https://github.com/dburles/meteor-two-factor#isverifying)
+  - [API (Server)](https://github.com/dburles/meteor-two-factor#api-server)
+    - [sendCode](https://github.com/dburles/meteor-two-factor#sendcode)
+    - [validateLoginAttempt](https://github.com/dburles/meteor-two-factor#validateloginattempt-optional)
+    - [generateCode](https://github.com/dburles/meteor-two-factor#generatecode-optional)
+- [License](https://github.com/dburles/meteor-two-factor#license)
+
 ## Installation
 
 ```sh
@@ -11,6 +29,10 @@ $ meteor add dburles:two-factor
 ## Prerequisites
 
 Make sure your project is using Meteor's `accounts-password` package, if not add it: `meteor add accounts-password`
+
+## Example Application
+
+[Simple example application](https://github.com/dburles/two-factor-example)
 
 ## Usage (Client)
 
@@ -85,7 +107,11 @@ The following functions are attached to the `twoFactor` namespace. This may chan
 
 ## API (Client)
 
-#### getAuthCode(user, password, [callback])
+#### getAuthCode
+
+```
+getAuthCode(user, password, [callback])
+```
 
 Generates an authentication code. Once generated, a `twoFactorCode` field is added to the current user document. This function mirrors [Meteor.loginWithPassword](http://docs.meteor.com/#/full/meteor_loginwithpassword).
 
@@ -95,7 +121,11 @@ Generates an authentication code. Once generated, a `twoFactorCode` field is add
 
 **callback** Optional callback. Called with no arguments on success, or with a single Error argument on failure.
 
-#### verifyAndLogin(code, [callback])
+#### verifyAndLogin
+
+```
+verifyAndLogin(code, [callback])
+```
 
 Verifies authentication code and logs in the user.
 
@@ -103,13 +133,21 @@ Verifies authentication code and logs in the user.
 
 **callback** Optional callback. Called with no arguments on success, or with a single Error argument on failure.
 
-#### isVerifying()
+#### isVerifying
+
+```
+isVerifying()
+```
 
 Reactive function that indicates the current state between having generated an authentication code and awaiting verification.
 
 ## API (Server)
 
-#### sendCode(user, code)
+#### sendCode
+
+```
+sendCode(user, code)
+```
 
 This function is called after `getAuthCode` is successful.
 
@@ -117,7 +155,11 @@ This function is called after `getAuthCode` is successful.
 
 **code** The generated authentication code.
 
-#### validateLoginAttempt(options) (Optional)
+#### validateLoginAttempt (Optional)
+
+```
+validateLoginAttempt(options)
+```
 
 If defined, this function is called within an `Accounts.validateLoginAttempt` callback.
 Use this to allow regular login under certain conditions.
