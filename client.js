@@ -39,6 +39,26 @@ const getAuthCode = (user, password, cb) => {
   );
 };
 
+const getNewAuthCode = cb => {
+  const selector = getSelector(state.get('user'));
+  const password = state.get('password');
+
+  const callback = error => {
+    if (error) {
+      return typeof cb === 'function' && cb(error);
+    }
+
+    return typeof cb === 'function' && cb();
+  };
+
+  Meteor.call(
+    'twoFactor.getAuthenticationCode',
+    selector,
+    password,
+    callback
+  );
+};
+
 const verifyAndLogin = (code, cb) => {
   const selector = getSelector(state.get('user'));
 
@@ -66,5 +86,6 @@ const verifyAndLogin = (code, cb) => {
 const isVerifying = () => state.get('verifying');
 
 twoFactor.getAuthCode = getAuthCode;
+twoFactor.getNewAuthCode = getNewAuthCode;
 twoFactor.verifyAndLogin = verifyAndLogin;
 twoFactor.isVerifying = isVerifying;

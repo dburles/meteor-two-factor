@@ -7,11 +7,13 @@ Simple two factor authentication for accounts-password.
 - [Installation](https://github.com/dburles/meteor-two-factor#installation)
 - [Prerequisites](https://github.com/dburles/meteor-two-factor#prerequisites)
 - [Example Application](https://github.com/dburles/meteor-two-factor#example-application)
-- [Usage (Client)](https://github.com/dburles/meteor-two-factor#usage-client)
-- [Usage (Server)](https://github.com/dburles/meteor-two-factor#usage-server)
+- [Usage](https://github.com/dburles/meteor-two-factor#example-application)
+  - [Client](https://github.com/dburles/meteor-two-factor#usage-client)
+  - [Server](https://github.com/dburles/meteor-two-factor#usage-server)
 - [API](https://github.com/dburles/meteor-two-factor#api)
   - [Client](https://github.com/dburles/meteor-two-factor#api-client)
     - [getAuthCode](https://github.com/dburles/meteor-two-factor#getauthcode)
+    - [getNewAuthCode](https://github.com/dburles/meteor-two-factor#getnewauthcode)
     - [verifyAndLogin](https://github.com/dburles/meteor-two-factor#verifyandlogin)
     - [isVerifying](https://github.com/dburles/meteor-two-factor#isverifying)
   - [Server](https://github.com/dburles/meteor-two-factor#api-server)
@@ -34,6 +36,10 @@ Make sure your project is using Meteor's `accounts-password` package, if not add
 
 [Simple example application](https://github.com/dburles/two-factor-example)
 
+## Usage
+
+Client and server usage examples.
+
 ## Usage (Client)
 
 Typically you would call this method via your application login form event handler:
@@ -47,7 +53,18 @@ twoFactor.getAuthCode(user, password, error => {
 });
 ```
 
-The following method is reactive and represents the state of authentication. Use it to display the interface to enter the authentication code.
+After calling `getAuthCode` if you wish, you can request a new authentication code:
+
+```js
+twoFactor.getNewAuthCode(error => {
+  if (error) {
+    // Handle the error
+  }
+  // Success!
+});
+```
+
+The following method is reactive and represents the state of authentication. Use it to display the interface to enter the authentication code:
 
 ```js
 Tracker.autorun(function() {
@@ -70,7 +87,7 @@ twoFactor.verifyAndLogin(code, error => {
 
 ## Usage (Server)
 
-Assign a function to `twoFactor.sendCode` that sends out the code. The example below sends the user an email.
+Assign a function to `twoFactor.sendCode` that sends out the code. The example below sends the user an email:
 
 ```js
 twoFactor.sendCode = (user, code) => {
@@ -118,6 +135,16 @@ Generates an authentication code. Once generated, a `twoFactorCode` field is add
 **user** Either a string interpreted as a username or an email; or an object with a single key: email, username or id. Username or email match in a case insensitive manner.
 
 **password** The user's password.
+
+**callback** Optional callback. Called with no arguments on success, or with a single Error argument on failure.
+
+#### getNewAuthCode
+
+```
+getNewAuthCode([callback])
+```
+
+Generates a new authentication code. Only functional while verifying.
 
 **callback** Optional callback. Called with no arguments on success, or with a single Error argument on failure.
 
