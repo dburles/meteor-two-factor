@@ -91,12 +91,15 @@ Assign a function to `twoFactor.sendCode` that sends out the code. The example b
 
 ```js
 twoFactor.sendCode = (user, code) => {
-  // Send code via email
-  Email.send({
-    to: user.email(), // Method attached using dburles:collection-helpers
-    from: 'noreply@example.com',
-    subject: 'Your authentication code',
-    text: `${code} is your authentication code.`
+  // Don't hold up the client
+  Meteor.defer(() => {
+    // Send code via email
+    Email.send({
+      to: user.email(), // Method attached using dburles:collection-helpers
+      from: 'noreply@example.com',
+      subject: 'Your authentication code',
+      text: `${code} is your authentication code.`
+    });
   });
 };
 ```
