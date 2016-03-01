@@ -92,7 +92,7 @@ Accounts.validateLoginAttempt(options => {
   if (typeof twoFactor.validateLoginAttempt === 'function') {
     valid = twoFactor.validateLoginAttempt(options);
   }
-  if (options.type === 'resume' || valid) {
+  if (valid || options.type === 'resume' || options.methodName === 'createUser') {
     return true;
   }
 });
