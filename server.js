@@ -88,11 +88,16 @@ Meteor.methods({
 });
 
 Accounts.validateLoginAttempt(options => {
-  let valid = false;
-  if (typeof twoFactor.validateLoginAttempt === 'function') {
-    valid = twoFactor.validateLoginAttempt(options);
-  }
-  if (valid || options.type === 'resume' || options.methodName === 'createUser') {
+  const customValidator = () => {
+    if (typeof twoFactor.validateLoginAttempt === 'function') {
+      return twoFactor.validateLoginAttempt(options);
+    }
+    return false;
+  };
+
+  const allowedMethods = ['createUser', 'resetPassword', 'verifyEmail'];
+
+  if (customValidator() || options.type === 'resume' || allowedMethods.indexOf(options.methodName) !== -1) {
     return true;
   }
 });
