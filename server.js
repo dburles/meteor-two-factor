@@ -1,5 +1,7 @@
 /* globals twoFactor */
 
+twoFactor.options = {};
+
 const generateCode = () => {
   return Array(...Array(6)).map(() => {
     return Math.floor(Math.random() * 10);
@@ -27,10 +29,16 @@ const invalidLogin = () => {
   return new Meteor.Error(403, "Invalid login credentials");
 };
 
+const getFieldName = () => {
+  return twoFactor.options.fieldName || 'twoFactorCode';
+};
+
 Meteor.methods({
   'twoFactor.getAuthenticationCode'(userQuery, password) {
     check(userQuery, userQueryValidator);
     check(password, String);
+
+    const fieldName = getFieldName();
 
     const user = Accounts._findUserByQuery(userQuery);
     if (! user) {
@@ -52,7 +60,7 @@ Meteor.methods({
 
     Meteor.users.update(user._id, {
       $set: {
-        twoFactorCode: code
+        [fieldName]: code
       }
     });
   },
@@ -62,6 +70,8 @@ Meteor.methods({
       password: String,
       code: String
     });
+
+    const fieldName = getFieldName();
 
     const user = Accounts._findUserByQuery(options.user);
     if (! user) {
@@ -73,13 +83,13 @@ Meteor.methods({
       throw invalidLogin();
     }
 
-    if (options.code !== user.twoFactorCode) {
+    if (options.code !== user[fieldName]) {
       throw new Meteor.Error(403, "Invalid code");
     }
 
     Meteor.users.update(user._id, {
       $unset: {
-        twoFactorCode: ''
+        [fieldName]: ''
       }
     });
 

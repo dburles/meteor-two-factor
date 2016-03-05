@@ -18,6 +18,7 @@ Simple two factor authentication for accounts-password.
     - [isVerifying](https://github.com/dburles/meteor-two-factor#isverifying)
   - [Server](https://github.com/dburles/meteor-two-factor#api-server)
     - [sendCode](https://github.com/dburles/meteor-two-factor#sendcode)
+    - [options](https://github.com/dburles/meteor-two-factor#options)
     - [validateLoginAttempt](https://github.com/dburles/meteor-two-factor#validateloginattempt-optional)
     - [generateCode](https://github.com/dburles/meteor-two-factor#generatecode-optional)
 - [License](https://github.com/dburles/meteor-two-factor#license)
@@ -133,7 +134,7 @@ The following functions are attached to the `twoFactor` namespace. This may chan
 getAuthCode(user, password, [callback])
 ```
 
-Generates an authentication code. Once generated, a `twoFactorCode` field is added to the current user document. This function mirrors [Meteor.loginWithPassword](http://docs.meteor.com/#/full/meteor_loginwithpassword).
+Generates an authentication code. Once generated, (by default) a `twoFactorCode` field is added to the current user document. This function mirrors [Meteor.loginWithPassword](http://docs.meteor.com/#/full/meteor_loginwithpassword).
 
 **user** Either a string interpreted as a username or an email; or an object with a single key: email, username or id. Username or email match in a case insensitive manner.
 
@@ -184,6 +185,14 @@ This function is called after `getAuthCode` is successful.
 **user** The current user document.
 
 **code** The generated authentication code.
+
+#### options
+
+```
+twoFactor.options.fieldName = 'customFieldName';
+```
+
+Specify the name of the field on the user document to write the authentication code. Defaults to `twoFactorCode`.
 
 #### validateLoginAttempt (Optional)
 
