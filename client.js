@@ -16,20 +16,26 @@ const getSelector = user => {
   return user;
 };
 
-const getAuthCode = (user, password, cb) => {
-  const selector = getSelector(user);
-
-  const callback = error => {
+const callbackHandler = (cb, handlerCb) => {
+  return error => {
     if (error) {
       return typeof cb === 'function' && cb(error);
     }
 
-    state.set('verifying', true);
-    state.set('user', user);
-    state.set('password', password);
+    handlerCb();
 
     return typeof cb === 'function' && cb();
   };
+};
+
+const getAuthCode = (user, password, cb) => {
+  const selector = getSelector(user);
+
+  const callback = callbackHandler(cb, () => {
+    state.set('verifying', true);
+    state.set('user', user);
+    state.set('password', password);
+  });
 
   Meteor.call(
     'twoFactor.getAuthenticationCode',
@@ -42,14 +48,7 @@ const getAuthCode = (user, password, cb) => {
 const getNewAuthCode = cb => {
   const selector = getSelector(state.get('user'));
   const password = state.get('password');
-
-  const callback = error => {
-    if (error) {
-      return typeof cb === 'function' && cb(error);
-    }
-
-    return typeof cb === 'function' && cb();
-  };
+  const callback = callbackHandler(cb);
 
   Meteor.call(
     'twoFactor.getAuthenticationCode',
@@ -69,17 +68,11 @@ const verifyAndLogin = (code, cb) => {
       password: state.get('password'),
       code
     }],
-    userCallback: error => {
-      if (error) {
-        return typeof cb === 'function' && cb(error);
-      }
-
+    userCallback: callbackHandler(cb, () => {
       state.set('verifying', false);
       state.set('user', '');
       state.set('password', '');
-
-      return typeof cb === 'function' && cb();
-    }
+    })
   });
 };
 
