@@ -11,10 +11,8 @@ Package.onUse(function(api) {
   api.use(['ecmascript', 'check']);
   api.use('reactive-dict', 'client');
   api.use('accounts-password', 'server');
-  api.addFiles('common.js');
-  api.addFiles('client.js', 'client');
-  api.addFiles('server.js', 'server');
-  api.export('twoFactor');
+  api.mainModule('client.js', 'client');
+  api.mainModule('server.js', 'server');
 });
 
 Package.onTest(function(api) {

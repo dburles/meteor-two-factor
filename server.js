@@ -1,11 +1,13 @@
-/* globals twoFactor */
-
-twoFactor.options = {};
-
-const generateCode = () => {
-  return Array(...Array(6)).map(() => {
-    return Math.floor(Math.random() * 10);
-  }).join('');
+// a set of user mutable options
+const options = {
+  generateCode() {
+    return Array(...Array(6)).map(() => {
+      return Math.floor(Math.random() * 10);
+    }).join('');
+  },
+  sendCode: null,
+  code: null,
+  validateLoginAttempt: null,
 };
 
 const NonEmptyString = Match.Where(x => {
@@ -30,7 +32,7 @@ const invalidLogin = () => {
 };
 
 const getFieldName = () => {
-  return twoFactor.options.fieldName || 'twoFactorCode';
+  return options.fieldName || 'twoFactorCode';
 };
 
 Meteor.methods({
@@ -50,12 +52,10 @@ Meteor.methods({
       throw invalidLogin();
     }
 
-    const code = typeof twoFactor.generateCode === 'function'
-      ? twoFactor.generateCode()
-      : generateCode();
+    const code = options.generateCode();
 
-    if (typeof twoFactor.sendCode === 'function') {
-      twoFactor.sendCode(user, code);
+    if (typeof options.sendCode === 'function') {
+      options.sendCode(user, code);
     }
 
     Meteor.users.update(user._id, {
@@ -99,8 +99,8 @@ Meteor.methods({
 
 Accounts.validateLoginAttempt(options => {
   const customValidator = () => {
-    if (typeof twoFactor.validateLoginAttempt === 'function') {
-      return twoFactor.validateLoginAttempt(options);
+    if (typeof options.validateLoginAttempt === 'function') {
+      return options.validateLoginAttempt(options);
     }
     return false;
   };
@@ -111,3 +111,5 @@ Accounts.validateLoginAttempt(options => {
     return true;
   }
 });
+
+export { options };

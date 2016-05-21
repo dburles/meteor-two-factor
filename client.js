@@ -1,5 +1,3 @@
-/* globals twoFactor */
-
 const state = new ReactiveDict('twoFactor');
 
 state.set('user', '');
@@ -78,7 +76,4 @@ const verifyAndLogin = (code, cb) => {
 
 const isVerifying = () => state.get('verifying');
 
-twoFactor.getAuthCode = getAuthCode;
-twoFactor.getNewAuthCode = getNewAuthCode;
-twoFactor.verifyAndLogin = verifyAndLogin;
-twoFactor.isVerifying = isVerifying;
+export { getAuthCode, getNewAuthCode, verifyAndLogin, isVerifying };
