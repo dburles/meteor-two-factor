@@ -22,7 +22,9 @@ const callbackHandler = (cb, handlerCb) => {
       return typeof cb === 'function' && cb(error);
     }
 
-    handlerCb();
+    if (typeof handlerCb === 'function') {
+      handlerCb();
+    }
 
     return typeof cb === 'function' && cb();
   };
