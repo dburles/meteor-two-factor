@@ -93,7 +93,7 @@ Meteor.methods({
       }
     });
 
-    return Accounts._loginUser(this, user._id);
+    return Accounts._attemptLogin(this, 'login', '', { type: '2FALogin', userId: user._id });
   }
 });
 
@@ -110,4 +110,6 @@ Accounts.validateLoginAttempt(options => {
   if (customValidator() || options.type === 'resume' || allowedMethods.indexOf(options.methodName) !== -1) {
     return true;
   }
+
+  return false;
 });
