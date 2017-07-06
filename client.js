@@ -80,7 +80,28 @@ const verifyAndLogin = (code, cb) => {
 
 const isVerifying = () => state.get('verifying');
 
+const abort = cb => {
+  const selector = getSelector(state.get('user'));
+  const password = state.get('password');
+
+  const callback = callbackHandler(cb, () => {
+    state.set({
+      'verifying': false,
+      user: '',
+      password: ''
+    });
+  });
+
+  Meteor.call(
+    'twoFactor.abort',
+    selector,
+    password,
+    callback
+  );
+};
+
 twoFactor.getAuthCode = getAuthCode;
 twoFactor.getNewAuthCode = getNewAuthCode;
 twoFactor.verifyAndLogin = verifyAndLogin;
 twoFactor.isVerifying = isVerifying;
+twoFactor.abort = abort;

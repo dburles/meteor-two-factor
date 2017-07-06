@@ -94,6 +94,28 @@ Meteor.methods({
     });
 
     return Accounts._attemptLogin(this, 'login', '', { type: '2FALogin', userId: user._id });
+  },
+  'twoFactor.abort'(userQuery, password) {
+    check(userQuery, userQueryValidator);
+    check(password, String);
+
+    const fieldName = getFieldName();
+
+    const user = Accounts._findUserByQuery(userQuery);
+    if (! user) {
+      throw invalidLogin();
+    }
+
+    const checkPassword = Accounts._checkPassword(user, password);
+    if (checkPassword.error) {
+      throw invalidLogin();
+    }
+
+    Meteor.users.update(user._id, {
+      $unset: {
+        [fieldName]: ''
+      }
+    });
   }
 });
 
