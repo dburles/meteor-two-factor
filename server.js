@@ -133,5 +133,9 @@ Accounts.validateLoginAttempt(options => {
     return true;
   }
 
+  if (options.type === '2FALogin' && options.methodName === 'login') {
+    return options.allowed;
+  }
+
   return false;
 });
