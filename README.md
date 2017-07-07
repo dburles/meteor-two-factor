@@ -16,6 +16,7 @@ Simple two factor authentication for accounts-password.
     - [getNewAuthCode](https://github.com/dburles/meteor-two-factor#getnewauthcode)
     - [verifyAndLogin](https://github.com/dburles/meteor-two-factor#verifyandlogin)
     - [isVerifying](https://github.com/dburles/meteor-two-factor#isverifying)
+    - [abort](https://github.com/dburles/meteor-two-factor#abort)
   - [Server](https://github.com/dburles/meteor-two-factor#api-server)
     - [sendCode](https://github.com/dburles/meteor-two-factor#sendcode)
     - [options](https://github.com/dburles/meteor-two-factor#options)
@@ -171,6 +172,16 @@ isVerifying()
 ```
 
 Reactive function that indicates the current state between having generated an authentication code and awaiting verification.
+
+#### abort
+
+```
+isVerifying([callback])
+```
+
+Call this function while verifying if you wish to allow the user to sign in again.
+
+**callback** Optional callback. Called with no arguments on success, or with a single Error argument on failure.
 
 ## API (Server)
 
