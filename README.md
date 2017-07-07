@@ -128,15 +128,19 @@ twoFactor.generateCode = () => {
 Use [DDPRateLimiter](https://docs.meteor.com/api/methods.html#ddpratelimiter) to prevent verification code cracking
 
 ```js
-import { DDPRateLimiter } from 'meteor/ddp-rate-limiter'
-const numberOfAttempts = 5
-const timeInterval = 60
-DDPRateLimiter.addRule({
-        type: 'method',
-        name: 'twoFactor.verifyCodeAndLogin'
-      }, 
-      numberOfAttempts, 
-      timeInterval * 1000);
+import { DDPRateLimiter } from 'meteor/ddp-rate-limiter';
+
+const numberOfAttempts = 5;
+const timeInterval = 60;
+
+DDPRateLimiter.addRule(
+  {
+    type: 'method',
+    name: 'twoFactor.verifyCodeAndLogin',
+  },
+  numberOfAttempts,
+  timeInterval * 1000
+);
 ```
 
 ## API
