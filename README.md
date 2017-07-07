@@ -176,7 +176,7 @@ Reactive function that indicates the current state between having generated an a
 #### abort
 
 ```
-isVerifying([callback])
+abort([callback])
 ```
 
 Call this function while verifying if you wish to allow the user to sign in again.
