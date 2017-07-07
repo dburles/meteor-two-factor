@@ -9,9 +9,9 @@ state.set('verifying', false);
 const getSelector = user => {
   if (typeof user === 'string') {
     if (user.indexOf('@') === -1) {
-      return {username: user};
+      return { username: user };
     }
-    return {email: user};
+    return { email: user };
   }
   return user;
 };
@@ -39,12 +39,7 @@ const getAuthCode = (user, password, cb) => {
     state.set('password', password);
   });
 
-  Meteor.call(
-    'twoFactor.getAuthenticationCode',
-    selector,
-    password,
-    callback
-  );
+  Meteor.call('twoFactor.getAuthenticationCode', selector, password, callback);
 };
 
 const getNewAuthCode = cb => {
@@ -52,12 +47,7 @@ const getNewAuthCode = cb => {
   const password = state.get('password');
   const callback = callbackHandler(cb);
 
-  Meteor.call(
-    'twoFactor.getAuthenticationCode',
-    selector,
-    password,
-    callback
-  );
+  Meteor.call('twoFactor.getAuthenticationCode', selector, password, callback);
 };
 
 const verifyAndLogin = (code, cb) => {
@@ -65,16 +55,18 @@ const verifyAndLogin = (code, cb) => {
 
   Accounts.callLoginMethod({
     methodName: 'twoFactor.verifyCodeAndLogin',
-    methodArguments: [{
-      user: selector,
-      password: state.get('password'),
-      code
-    }],
+    methodArguments: [
+      {
+        user: selector,
+        password: state.get('password'),
+        code,
+      },
+    ],
     userCallback: callbackHandler(cb, () => {
       state.set('verifying', false);
       state.set('user', '');
       state.set('password', '');
-    })
+    }),
   });
 };
 
@@ -86,18 +78,13 @@ const abort = cb => {
 
   const callback = callbackHandler(cb, () => {
     state.set({
-      'verifying': false,
+      verifying: false,
       user: '',
-      password: ''
+      password: '',
     });
   });
 
-  Meteor.call(
-    'twoFactor.abort',
-    selector,
-    password,
-    callback
-  );
+  Meteor.call('twoFactor.abort', selector, password, callback);
 };
 
 twoFactor.getAuthCode = getAuthCode;

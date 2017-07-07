@@ -3,9 +3,11 @@
 twoFactor.options = {};
 
 const generateCode = () => {
-  return Array(...Array(6)).map(() => {
-    return Math.floor(Math.random() * 10);
-  }).join('');
+  return Array(...Array(6))
+    .map(() => {
+      return Math.floor(Math.random() * 10);
+    })
+    .join('');
 };
 
 const NonEmptyString = Match.Where(x => {
@@ -17,16 +19,16 @@ const userQueryValidator = Match.Where(user => {
   check(user, {
     id: Match.Optional(NonEmptyString),
     username: Match.Optional(NonEmptyString),
-    email: Match.Optional(NonEmptyString)
+    email: Match.Optional(NonEmptyString),
   });
   if (Object.keys(user).length !== 1) {
-    throw new Match.Error("User property must have exactly one field");
+    throw new Match.Error('User property must have exactly one field');
   }
   return true;
 });
 
 const invalidLogin = () => {
-  return new Meteor.Error(403, "Invalid login credentials");
+  return new Meteor.Error(403, 'Invalid login credentials');
 };
 
 const getFieldName = () => {
@@ -41,7 +43,7 @@ Meteor.methods({
     const fieldName = getFieldName();
 
     const user = Accounts._findUserByQuery(userQuery);
-    if (! user) {
+    if (!user) {
       throw invalidLogin();
     }
 
@@ -50,9 +52,10 @@ Meteor.methods({
       throw invalidLogin();
     }
 
-    const code = typeof twoFactor.generateCode === 'function'
-      ? twoFactor.generateCode()
-      : generateCode();
+    const code =
+      typeof twoFactor.generateCode === 'function'
+        ? twoFactor.generateCode()
+        : generateCode();
 
     if (typeof twoFactor.sendCode === 'function') {
       twoFactor.sendCode(user, code);
@@ -60,21 +63,21 @@ Meteor.methods({
 
     Meteor.users.update(user._id, {
       $set: {
-        [fieldName]: code
-      }
+        [fieldName]: code,
+      },
     });
   },
   'twoFactor.verifyCodeAndLogin'(options) {
     check(options, {
       user: userQueryValidator,
       password: String,
-      code: String
+      code: String,
     });
 
     const fieldName = getFieldName();
 
     const user = Accounts._findUserByQuery(options.user);
-    if (! user) {
+    if (!user) {
       throw invalidLogin();
     }
 
@@ -84,16 +87,19 @@ Meteor.methods({
     }
 
     if (options.code !== user[fieldName]) {
-      throw new Meteor.Error(403, "Invalid code");
+      throw new Meteor.Error(403, 'Invalid code');
     }
 
     Meteor.users.update(user._id, {
       $unset: {
-        [fieldName]: ''
-      }
+        [fieldName]: '',
+      },
     });
 
-    return Accounts._attemptLogin(this, 'login', '', { type: '2FALogin', userId: user._id });
+    return Accounts._attemptLogin(this, 'login', '', {
+      type: '2FALogin',
+      userId: user._id,
+    });
   },
   'twoFactor.abort'(userQuery, password) {
     check(userQuery, userQueryValidator);
@@ -102,7 +108,7 @@ Meteor.methods({
     const fieldName = getFieldName();
 
     const user = Accounts._findUserByQuery(userQuery);
-    if (! user) {
+    if (!user) {
       throw invalidLogin();
     }
 
@@ -113,10 +119,10 @@ Meteor.methods({
 
     Meteor.users.update(user._id, {
       $unset: {
-        [fieldName]: ''
-      }
+        [fieldName]: '',
+      },
     });
-  }
+  },
 });
 
 Accounts.validateLoginAttempt(options => {
@@ -129,7 +135,11 @@ Accounts.validateLoginAttempt(options => {
 
   const allowedMethods = ['createUser', 'resetPassword', 'verifyEmail'];
 
-  if (customValidator() || options.type === 'resume' || allowedMethods.indexOf(options.methodName) !== -1) {
+  if (
+    customValidator() ||
+    options.type === 'resume' ||
+    allowedMethods.indexOf(options.methodName) !== -1
+  ) {
     return true;
   }
 
