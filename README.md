@@ -129,7 +129,7 @@ The following functions are attached to the `twoFactor` namespace. This may chan
 
 ## API (Client)
 
-#### getAuthCode
+### getAuthCode
 
 ```
 getAuthCode(user, password, [callback])
@@ -143,7 +143,7 @@ Generates an authentication code. Once generated, (by default) a `twoFactorCode`
 
 **callback** Optional callback. Called with no arguments on success, or with a single Error argument on failure.
 
-#### getNewAuthCode
+### getNewAuthCode
 
 ```
 getNewAuthCode([callback])
@@ -153,7 +153,7 @@ Generates a new authentication code. Only functional while verifying.
 
 **callback** Optional callback. Called with no arguments on success, or with a single Error argument on failure.
 
-#### verifyAndLogin
+### verifyAndLogin
 
 ```
 verifyAndLogin(code, [callback])
@@ -165,7 +165,7 @@ Verifies authentication code and logs in the user.
 
 **callback** Optional callback. Called with no arguments on success, or with a single Error argument on failure.
 
-#### isVerifying
+### isVerifying
 
 ```
 isVerifying()
@@ -173,7 +173,7 @@ isVerifying()
 
 Reactive function that indicates the current state between having generated an authentication code and awaiting verification.
 
-#### abort
+### abort
 
 ```
 abort([callback])
@@ -185,7 +185,7 @@ Call this function while verifying if you wish to allow the user to sign in agai
 
 ## API (Server)
 
-#### sendCode
+### sendCode
 
 ```
 sendCode(user, code)
@@ -197,7 +197,7 @@ This function is called after `getAuthCode` is successful.
 
 **code** The generated authentication code.
 
-#### options
+### options
 
 ```
 twoFactor.options.fieldName = 'customFieldName';
@@ -205,7 +205,7 @@ twoFactor.options.fieldName = 'customFieldName';
 
 Specify the name of the field on the user document to write the authentication code. Defaults to `twoFactorCode`.
 
-#### validateLoginAttempt (Optional)
+### validateLoginAttempt (Optional)
 
 ```
 validateLoginAttempt(options)
@@ -214,7 +214,7 @@ validateLoginAttempt(options)
 If defined, this function is called within an `Accounts.validateLoginAttempt` callback.
 Use this to allow regular login under certain conditions.
 
-#### generateCode (Optional)
+### generateCode (Optional)
 
 If defined, this function is called to generate the random code instead of the default.
 
