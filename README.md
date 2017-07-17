@@ -139,11 +139,14 @@ DDPRateLimiter.addRule(
     userId: null,
     clientAddress: null,
     name(name) {
-      const methods = [ 'twoFactor.verifyCodeAndLogin', 'twoFactor.getAuthenticationCode' ]
-      return methods.includes(name)
+      const methods = [
+        'twoFactor.verifyCodeAndLogin',
+        'twoFactor.getAuthenticationCode'
+      ];
+      return methods.includes(name);
     },
     connectionId() {
-      return true
+      return true;
     }
   },
   numberOfAttempts,
