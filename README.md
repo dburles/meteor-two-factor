@@ -136,7 +136,15 @@ const timeInterval = 60;
 DDPRateLimiter.addRule(
   {
     type: 'method',
-    name: 'twoFactor.verifyCodeAndLogin',
+    userId: null,
+    clientAddress: null,
+    name(name) {
+      const methods = [ 'twoFactor.verifyCodeAndLogin', 'twoFactor.getAuthenticationCode' ]
+      return methods.includes(name)
+    },
+    connectionId() {
+      return true
+    }
   },
   numberOfAttempts,
   timeInterval * 1000
