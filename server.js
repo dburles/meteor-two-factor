@@ -27,6 +27,8 @@ const userQueryValidator = Match.Where(user => {
   return true;
 });
 
+const passwordValidator = { digest: String, algorithm: String };
+
 const invalidLogin = () => {
   return new Meteor.Error(403, 'Invalid login credentials');
 };
@@ -38,7 +40,7 @@ const getFieldName = () => {
 Meteor.methods({
   'twoFactor.getAuthenticationCode'(userQuery, password) {
     check(userQuery, userQueryValidator);
-    check(password, String);
+    check(password, passwordValidator);
 
     const fieldName = getFieldName();
 
@@ -70,7 +72,7 @@ Meteor.methods({
   'twoFactor.verifyCodeAndLogin'(options) {
     check(options, {
       user: userQueryValidator,
-      password: String,
+      password: passwordValidator,
       code: String,
     });
 
@@ -103,7 +105,7 @@ Meteor.methods({
   },
   'twoFactor.abort'(userQuery, password) {
     check(userQuery, userQueryValidator);
-    check(password, String);
+    check(password, passwordValidator);
 
     const fieldName = getFieldName();
 
