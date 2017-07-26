@@ -32,7 +32,7 @@ const callbackHandler = (cb, handlerCb) => {
 
 const getAuthCode = (user, password, cb) => {
   const selector = getSelector(user);
-  const hashedPassword = Accounts._hashPassword(password)
+  const hashedPassword = Accounts._hashPassword(password);
 
   const callback = callbackHandler(cb, () => {
     state.set('verifying', true);
@@ -40,7 +40,12 @@ const getAuthCode = (user, password, cb) => {
     state.set('password', hashedPassword);
   });
 
-  Meteor.call('twoFactor.getAuthenticationCode', selector, hashedPassword, callback);
+  Meteor.call(
+    'twoFactor.getAuthenticationCode',
+    selector,
+    hashedPassword,
+    callback,
+  );
 };
 
 const getNewAuthCode = cb => {
