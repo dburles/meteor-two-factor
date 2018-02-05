@@ -10,6 +10,7 @@ Package.onUse(function(api) {
   api.versionsFrom('1.2.1');
   api.use(['ecmascript', 'check']);
   api.use('reactive-dict', 'client');
+  api.use('steeve:jquery-qrcode', 'client');
   api.use('accounts-password', ['client', 'server']);
   api.addFiles('common.js');
   api.addFiles('client.js', 'client');
