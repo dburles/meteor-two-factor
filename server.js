@@ -69,6 +69,27 @@ Meteor.methods({
       },
     });
   },
+  'twoFactor.resendAuthenticationCode'(userQuery, password) {
+    check(userQuery, userQueryValidator);
+    check(password, passwordValidator);
+
+    const user = Accounts._findUserByQuery(userQuery);
+    if (!user) {
+      throw invalidLogin();
+    }
+
+    const checkPassword = Accounts._checkPassword(user, password);
+    if (checkPassword.error) {
+      throw invalidLogin();
+    }
+
+    const fieldName = getFieldName();
+    const code = user[fieldName];
+
+    if (typeof twoFactor.sendCode === 'function') {
+      twoFactor.sendCode(user, code);
+    }
+  },
   'twoFactor.verifyCodeAndLogin'(options) {
     check(options, {
       user: userQueryValidator,
