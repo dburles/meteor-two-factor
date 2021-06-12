@@ -112,7 +112,8 @@ twoFactor.sendCode = (user, code) => {
 // Optional
 // Conditionally allow regular or two-factor sign in
 twoFactor.validateLoginAttempt = options => {
-  return !! options.user.twoFactorEnabled;
+  // If two factor auth isn't enabled for this user, allow regular sign in.
+  return !options.user.twoFactorEnabled;
 };
 ```
 
