@@ -14,6 +14,7 @@ Simple two factor authentication for accounts-password.
   - [Client](https://github.com/dburles/meteor-two-factor#api-client)
     - [getAuthCode](https://github.com/dburles/meteor-two-factor#getauthcode)
     - [getNewAuthCode](https://github.com/dburles/meteor-two-factor#getnewauthcode)
+    - [resendAuthCode](https://github.com/dburles/meteor-two-factor#resendauthcode)
     - [verifyAndLogin](https://github.com/dburles/meteor-two-factor#verifyandlogin)
     - [isVerifying](https://github.com/dburles/meteor-two-factor#isverifying)
     - [abort](https://github.com/dburles/meteor-two-factor#abort)
@@ -182,6 +183,16 @@ getNewAuthCode([callback])
 ```
 
 Generates a new authentication code. Only functional while verifying.
+
+**callback** Optional callback. Called with no arguments on success, or with a single Error argument on failure.
+
+### resendAuthCode
+
+```
+resendAuthCode([callback])
+```
+
+Sends generated authentication code one more time. Only functional while verifying.
 
 **callback** Optional callback. Called with no arguments on success, or with a single Error argument on failure.
 
